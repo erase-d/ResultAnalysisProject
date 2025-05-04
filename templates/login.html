@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style1.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="left-panel">
+      <div class="form-box">
+        <img src="{{ url_for('static', filename='images/dsce-logo.png') }}" class="logo" alt="Logo">
+        <h1>WELCOME BACK</h1>
+        <p class="subtitle">Enter your details to Log in</p>
+        <form id="loginForm" method="POST">
+          <input type="text" name="username" placeholder="Enter Your Username" required>
+          <input type="password" name="password" placeholder="Enter Your Password" required>
+          <button type="submit">Sign In</button>
+        </form>
+        {% if error %}
+        <div id="error-message" style="color: red; margin-top: 10px;">{{ error }}</div>
+        {% else %}
+        <div id="error-message" style="color: red; display: none; margin-top: 10px;"></div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="right-panel">
+      <img src="{{ url_for('static', filename='images/alt.png') }}" alt="Scenery">
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const formData = {
+        username: this.username.value,
+        password: this.password.value
+      };
+
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.style.display = 'none';
+
+      try {
+        console.log('Sending login request...');
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+
+        console.log('Response received:', response.status);
+        
+        if (response.ok) {
+          const data = await response.json();
+          console.log('Response data:', data);
+          console.log('Login successful, redirecting...');
+          window.location.href = data.redirect || '/dashboard';
+        } else {
+          const data = await response.json();
+          console.log('Login failed:', data.message);
+          errorMessage.textContent = data.message || 'Login failed';
+          errorMessage.style.display = 'block';
+        }
+      } catch (error) {
+        console.error('Error during login:', error);
+        errorMessage.textContent = 'An error occurred. Please try again.';
+        errorMessage.style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

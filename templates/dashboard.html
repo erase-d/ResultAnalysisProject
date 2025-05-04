@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Student Info</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='CSS/style2.css') }}">
+</head>
+<body>
+
+  <div class="main-box">
+    <div class="top">
+     <div class="black-bar">
+       <p class="bar-text">Welcome to the Student Information Portal :</p>
+     </div>
+     <div class="top-right">
+       <button class="upload-btn">Upload Document</button>
+     </div>
+      
+     
+       <form method="POST" action="/dashboard">
+        <div class="blur-box">
+          <h1 style="text-align:center;">STUDENT INFORMATION :</h1>
+
+          <div class="form-row">
+            <label for="batch">Batch Year:</label>
+            <select id="batch" name="batch_year" required>
+              <option value="" disabled selected>Select</option>
+              <option value="2019">2019</option>
+              <option value="2020">2020</option>
+              <option value="2021">2021</option>
+              <option value="2022">2022</option>
+              <option value="2023">2023</option>
+              <option value="2024">2024</option>
+            </select>
+
+            <label for="semester">Semester:</label>
+            <select id="semester" name="semester" required>
+              <option value="" disabled selected>Select</option>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+              <option value="5">5</option>
+              <option value="6">6</option>
+              <option value="7">7</option>
+              <option value="8">8</option>
+            </select>
+
+            <label for="course">Course:</label>
+            <select id="course" name="course" required>
+              <option value="" disabled selected>Select</option>
+              <option value="Maths">Maths</option>
+              <option value="Physics">Physics</option>
+              <option value="Chemistry">Chemistry</option>
+            </select>
+          </div>
+
+          <div class="button-wrapper">
+            <button type="submit">Generate Visualization</button>
+          </div>
+
+          <!-- 🔁 Only show the report if the URL is passed -->
+          {% if looker_url %}
+          <div class="Visualization">
+            <iframe 
+              src="{{ looker_url }}"
+              width="100%" 
+              height="800" 
+              frameborder="0" 
+              allowfullscreen>
+            </iframe>
+          </div>
+          {% endif %}
+        </div>
+      </form>
+      <!-- 🔁 FORM ENDS HERE -->
+    </div>
+
+    <div class="bottom">
+      <img src="{{ url_for('static', filename='images/bottom.png') }}" alt="Scenery">
+    </div>
+  </div>
+
+  
+
+</body>
+</html>
